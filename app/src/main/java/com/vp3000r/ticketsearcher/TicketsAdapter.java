@@ -5,6 +5,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
+import android.widget.TextView;
 
 import java.util.ArrayList;
 
@@ -42,22 +43,17 @@ public class TicketsAdapter extends BaseAdapter {
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
         View view  = convertView;
-       /*
+
         if (view == null) {
-            view = this.inflater.inflate(R.layout.game_item, parent, false);
+            view = this.inflater.inflate(R.layout.trip_item, parent, false);
         }
 
-        Game g = getGame(position);
+        Trip g = getTrip(position);
 
-        ((TextView) view.findViewById(R.id.gameName)).setText(SGONAY_TEXT + g.getNumber());
-        ((TextView) view.findViewById(R.id.gameDate)).setText(g.getDate());
-        if (g.getScheme().equals("3")) {
-            ((TextView) view.findViewById(R.id.gameTimeOut)).setText("");
-        } else {
-            ((TextView) view.findViewById(R.id.gameTimeOut)).setText(g.getTimeOut() + MINUTES_TEXT);
-        }
-        ((TextView) view.findViewById(R.id.gameTitle)).setText(g.getTitle());
-*/
+        ((TextView) view.findViewById(R.id.cityNameFrom)).setText(g.getCityNameFrom());
+        ((TextView) view.findViewById(R.id.cityNameTo)).setText(g.getCityNameTo());
+
+
         return view;
 
     }

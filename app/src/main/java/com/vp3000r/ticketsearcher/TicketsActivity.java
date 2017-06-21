@@ -16,6 +16,7 @@ import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
+import com.android.volley.toolbox.JsonArrayRequest;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
@@ -69,10 +70,20 @@ public class TicketsActivity extends AppCompatActivity {
                 // это шаг 3, функцией show() мы говорим, что календарь нужно отобразить
                 dateBirdayDatePicker.show();
                 break;
+            case R.id.button:
+                EditText editText = (EditText) findViewById(R.id.txtRegWindowBD);
+                String value = editText.getText().toString();
+                char buf[] = new char[8];
+
+                value.getChars(6,9,buf,0);
+                value.getChars(3,4,buf,4);
+                value.getChars(0,1,buf,6);
+                  String dateStr = buf.toString();
+                getTickets(dateStr);
+                break;
         }
     }
-    public static final String RESPONSE_STRING = "response";
-    public static final String RETURN_PARAMETER_STRING = "retParameter";
+
 
     private void initDateBirthdayDatePicker() {
         Calendar newCalendar = Calendar.getInstance(); // объект типа Calendar мы будем использовать для получения даты
@@ -91,16 +102,13 @@ public class TicketsActivity extends AppCompatActivity {
 
 
 
-    public void getTickets(int day, int month, int year) {
-        JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.POST, "http://android-dev-tests.ru/sapi/v1/flight/tickets/MOWSIP"+year+month+day+"?apikey=177a01bf5813336afd59e6551216f6ed", null,
-                new Response.Listener<JSONObject>() {
+    public void getTickets(String dateStr) {
+        JsonArrayRequest stringRequest = new JsonArrayRequest(Request.Method.POST, "http://android-dev-tests.ru/sapi/v1/flight/tickets/MOWSIP"+dateStr+"?apikey=177a01bf5813336afd59e6551216f6ed", null,
+                new Response.Listener<JSONArray>() {
                     @Override
-                    public void onResponse(JSONObject response) {
+                    public void onResponse(JSONArray response) {
                         try {
-                            JSONObject responseObject = response.getJSONObject(RESPONSE_STRING);
-                            JSONArray jsonArray = responseObject.getJSONArray(RETURN_PARAMETER_STRING);
-
-                            putDataToAdapter(jsonArray);
+                             putDataToAdapter(response);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
