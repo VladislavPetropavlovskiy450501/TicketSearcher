@@ -66,21 +66,30 @@ public class TicketsActivity extends AppCompatActivity {
 
     public void onClick(View w) {
         switch (w.getId()) {
-            case R.id.txtRegWindowBD:
-                // это шаг 3, функцией show() мы говорим, что календарь нужно отобразить
-                dateBirdayDatePicker.show();
-                break;
             case R.id.button:
+            {
                 EditText editText = (EditText) findViewById(R.id.txtRegWindowBD);
                 String value = editText.getText().toString();
-                char buf[] = new char[8];
+      /*          char buf[] = new char[8];
 
-                value.getChars(6,9,buf,0);
-                value.getChars(3,4,buf,4);
-                value.getChars(0,1,buf,6);
-                  String dateStr = buf.toString();
-                getTickets(dateStr);
+                value.getChars(6,10,buf,0);
+                value.getChars(3,5,buf,4);
+                value.getChars(0,2,buf,6);
+                String dateStr = buf.toString();
+            dateStr = buf.+buf[1];*/
+String val2 = value.substring(6,10)+value.substring(3,5)+value.substring(0,2);
+                getTickets(val2);
                 break;
+            }
+
+            case R.id.txtRegWindowBD:
+            {    // это шаг 3, функцией show() мы говорим, что календарь нужно отобразить
+                initDateBirthdayDatePicker();
+                dateBirdayDatePicker.show();
+
+                break;
+        }
+
         }
     }
 
