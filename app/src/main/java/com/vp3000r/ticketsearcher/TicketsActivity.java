@@ -8,6 +8,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ListView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -22,13 +23,16 @@ import com.google.android.gms.appindexing.Action;
 import com.google.android.gms.appindexing.AppIndex;
 import com.google.android.gms.common.api.GoogleApiClient;
 
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.Map;
+
 
 
 public class TicketsActivity extends AppCompatActivity {
@@ -67,6 +71,8 @@ public class TicketsActivity extends AppCompatActivity {
                 break;
         }
     }
+    public static final String RESPONSE_STRING = "response";
+    public static final String RETURN_PARAMETER_STRING = "retParameter";
 
     private void initDateBirthdayDatePicker() {
         Calendar newCalendar = Calendar.getInstance(); // объект типа Calendar мы будем использовать для получения даты
@@ -86,13 +92,15 @@ public class TicketsActivity extends AppCompatActivity {
 
 
     public void getTickets(int day, int month, int year) {
-        JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.POST, "http://android-dev-tests.ru/sapi/v1/flight/tickets/MOWSIP"+year+month+day+"?apikey=177a01bf5813336afd59e6551216f6ed",
+        JsonObjectRequest stringRequest = new JsonObjectRequest(Request.Method.POST, "http://android-dev-tests.ru/sapi/v1/flight/tickets/MOWSIP"+year+month+day+"?apikey=177a01bf5813336afd59e6551216f6ed", null,
                 new Response.Listener<JSONObject>() {
                     @Override
                     public void onResponse(JSONObject response) {
                         try {
                             JSONObject responseObject = response.getJSONObject(RESPONSE_STRING);
+                            JSONArray jsonArray = responseObject.getJSONArray(RETURN_PARAMETER_STRING);
 
+                            putDataToAdapter(jsonArray);
 
                         } catch (JSONException e) {
                             e.printStackTrace();
@@ -105,7 +113,7 @@ public class TicketsActivity extends AppCompatActivity {
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d(null, "Error: " + error.getMessage());
-        
+
             }
         }){
             @Override
@@ -122,7 +130,42 @@ public class TicketsActivity extends AppCompatActivity {
         requestQueue.add(stringRequest);
     }
 
+    private ListView mTickList;
 
+    private TicketsAdapter mAdapter;
+    private ArrayList<Trip> mTrips = new ArrayList<>();
+    private void putDataToAdapter(JSONArray array) throws JSONException {
+        int mTickCount = array.length();
+
+        for(int i = 0; i < mTickCount; i++) {
+            JSONObject object = array.getJSONObject(i);
+            mTrips.add(new Trip(object.getString("cityNameFrom"),
+                    object.getString("cityNameTo"),
+                    object.getString("iataFrom"),
+                    object.getString("iataTo"),
+                    object.getString("airportNameFrom"),
+                    object.getString("airportNameTo"),
+                    object.getString("depDate"),
+                    object.getString("depTime"),
+                    object.getString("arrDate"),
+                    object.getString("arrTime"),
+                    object.getInt("duration"),
+                    object.getString("durationStr"),
+                    object.getString("airlineCode"),
+                    object.getString("airlineName"),
+                    object.getString("flightNumber"),
+                    object.getString("aircraft"),
+                    object.getString("airlineCode2"),
+                    object.getString("airlineName2"),
+                    object.getString("flightNumber2"),
+                    object.getString("aircraft2"),
+                    object.getInt("price"),
+                    object.getString("priceCurrency"),
+                    object.getString("code")));
+        }
+
+        mAdapter = new TicketsAdapter(getApplicationContext(), mTrips);
+        mTickList.setAdapter(mAdapter);
     }
 
 
