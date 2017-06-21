@@ -5,6 +5,7 @@ import android.app.DownloadManager;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Base64;
 import android.view.View;
 import android.widget.DatePicker;
 import android.widget.EditText;
@@ -45,6 +46,9 @@ public class TicketsActivity extends AppCompatActivity {
         }*/
     private EditText txtRegWinBD;
     private DatePickerDialog dateBirdayDatePicker;
+    private ListView mTickList;
+    private TicketsAdapter mAdapter;
+    private ArrayList<Trip> mTrips = new ArrayList<>();
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -58,6 +62,7 @@ public class TicketsActivity extends AppCompatActivity {
         //находим в layout-файле нужный нам EditText
         txtRegWinBD = (EditText) findViewById(R.id.txtRegWindowBD);
         //эта функция делает шаг 1: создает объект DatePickerDialog
+        mTickList = (ListView) findViewById(R.id.trips_list);
 
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -112,45 +117,48 @@ String val2 = value.substring(6,10)+value.substring(3,5)+value.substring(0,2);
 
 
     public void getTickets(String dateStr) {
-        JsonArrayRequest stringRequest = new JsonArrayRequest(Request.Method.POST, "http://android-dev-tests.ru/sapi/v1/flight/tickets/MOWSIP"+dateStr+"?apikey=177a01bf5813336afd59e6551216f6ed", null,
+        String url = "http://android-dev-tests.ru/sapi/v1/flight/tickets/MOWSIP"+dateStr+"?apikey=177a01bf5813336afd59e6551216f6ed";
+
+        JsonArrayRequest stringRequest = new JsonArrayRequest(Request.Method.GET, url, null,
                 new Response.Listener<JSONArray>() {
                     @Override
                     public void onResponse(JSONArray response) {
                         try {
                              putDataToAdapter(response);
-
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
-
-
-
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
-                VolleyLog.d(null, "Error: " + error.getMessage());
+                VolleyLog.d("Volley", "Error: " + error.getMessage());
 
             }
         }){
             @Override
-            protected Map<String,String> getParams(){
-                Map<String,String> params = new HashMap<String, String>();
+            public Map<String,String> getHeaders () {
+                Map<String, String> headers = new HashMap<>();
+                String credentials = "user2:Bshj7Hj9rwt";
+                String auth = "Basic "
+                        + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
+                headers.put("Content-Type", "application/json");
+                headers.put("Authorization", auth);
+            /*Map<String,String> params = new HashMap<String, String>();
                 params.put("Login","user2");
                 params.put("password","Bshj7Hj9rwt");
-                return params;
-            }
 
+
+            }*/
+                return headers;
+            }
         };
 
         RequestQueue requestQueue = Volley.newRequestQueue(this);
         requestQueue.add(stringRequest);
     }
 
-    private ListView mTickList;
 
-    private TicketsAdapter mAdapter;
-    private ArrayList<Trip> mTrips = new ArrayList<>();
     private void putDataToAdapter(JSONArray array) throws JSONException {
         int mTickCount = array.length();
 
