@@ -90,7 +90,7 @@ public class Trip {
 
         return mDepDate;
     }
-    public String geArrTime() {
+    public String getArrTime() {
 
         return mArrTime;
     }
