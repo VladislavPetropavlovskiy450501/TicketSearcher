@@ -9,6 +9,7 @@
 
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
+        android:textColor="@color/android:black"
         android:id="@+id/cf"
         android:layout_alignParentTop="true"
         android:layout_alignParentLeft="true"
@@ -21,7 +22,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
         android:id="@+id/ct"
-
+        android:textColor="@color/android:black"
         android:layout_alignParentTop="true"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
@@ -31,8 +32,10 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
+        android:textColor="@color/android:black"
         android:id="@+id/df"
-        android:layout_below="@+id/cf"
+        android:layout_below="@+id/ccf"
+
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
 
@@ -42,7 +45,8 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
         android:id="@+id/dt"
-        android:layout_below="@+id/ct"
+        android:textColor="@color/android:black"
+        android:layout_below="@+id/cct"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
 
@@ -51,6 +55,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="tf"
+        android:textColor="@color/android:black"
         android:id="@+id/tf"
         android:layout_below="@+id/df" />
 
@@ -60,6 +65,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
         android:id="@+id/tt"
+        android:textColor="@color/android:black"
         android:layout_below="@+id/dt"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
@@ -69,10 +75,11 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
+        android:textColor="@color/android:black"
         android:id="@+id/ccf"
-        android:layout_alignParentTop="true"
-        android:layout_toRightOf="@+id/cf"
-        android:layout_toEndOf="@+id/cf" />
+        android:layout_below="@+id/cf"
+        android:layout_alignParentLeft="true"
+        android:layout_alignParentStart="true" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -80,15 +87,17 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="cct"
         android:id="@+id/cct"
-        android:layout_alignParentTop="true"
-        android:layout_toLeftOf="@+id/ct"
-        android:layout_toStartOf="@+id/ct" />
+        android:textColor="@color/android:black"
+        android:layout_below="@+id/ct"
+        android:layout_toLeftOf="@+id/act"
+        android:layout_toStartOf="@+id/act" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
+        android:textColor="@color/android:black"
         android:id="@+id/dur"
         android:layout_alignBottom="@+id/tt"
         android:layout_centerHorizontal="true" />
@@ -98,27 +107,33 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="acf"
+        android:textColor="@color/android:black"
         android:id="@+id/acf"
-        android:layout_below="@+id/ccf"
-        android:layout_toRightOf="@+id/cf"
-        android:layout_toEndOf="@+id/cf" />
+        android:paddingLeft="5dp"
+        android:layout_alignTop="@+id/ccf"
+        android:layout_toRightOf="@+id/ccf"
+        android:layout_toEndOf="@+id/ccf" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="act"
+        android:textColor="@color/android:black"
         android:id="@+id/act"
-        android:layout_below="@+id/ccf"
-        android:layout_toLeftOf="@+id/ct"
-        android:layout_toStartOf="@+id/ct" />
+        android:paddingLeft="5dp"
+        android:layout_below="@+id/ct"
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="ac1"
+        android:textColor="@color/android:black"
         android:id="@+id/ac1"
+        android:paddingRight="5dp"
         android:layout_below="@+id/tf"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -129,6 +144,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Flight number:"
         android:id="@+id/textView18"
+        android:textColor="@color/android:black"
         android:layout_below="@+id/ac1"
         android:layout_alignParentLeft="true"
         android:layout_alignParentStart="true" />
@@ -140,6 +156,7 @@
         android:text="acm1"
         android:id="@+id/acm1"
         android:layout_below="@+id/tf"
+        android:textColor="@color/android:black"
         android:layout_toRightOf="@+id/ac1"
         android:layout_toEndOf="@+id/ac1" />
 
@@ -149,7 +166,8 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Duration:"
         android:id="@+id/textView20"
-        android:layout_below="@+id/acf"
+        android:textColor="@color/android:black"
+        android:layout_above="@+id/dur"
         android:layout_centerHorizontal="true" />
 
     <TextView
@@ -158,6 +176,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
         android:id="@+id/fn1"
+        android:textColor="@color/android:black"
         android:layout_alignTop="@+id/textView18"
         android:layout_toRightOf="@+id/textView18"
         android:layout_toEndOf="@+id/textView18" />
@@ -167,6 +186,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Aircraft:"
+        android:textColor="@color/android:black"
         android:id="@+id/textView22"
         android:layout_below="@+id/textView18"
         android:layout_alignParentLeft="true"
@@ -178,6 +198,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
         android:id="@+id/acr1"
+        android:textColor="@color/android:black"
         android:layout_alignTop="@+id/textView22"
         android:layout_toRightOf="@+id/textView22"
         android:layout_toEndOf="@+id/textView22" />
@@ -187,7 +208,9 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
+        android:textColor="@color/android:black"
         android:id="@+id/acm2"
+        android:paddingLeft="5dp"
         android:layout_above="@+id/fn1"
         android:layout_alignRight="@+id/tt"
         android:layout_alignEnd="@+id/tt" />
@@ -197,10 +220,11 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Flight number:"
+        android:textColor="@color/android:black"
         android:id="@+id/textView25"
-        android:layout_below="@+id/ac2"
-        android:layout_alignRight="@+id/ac2"
-        android:layout_alignEnd="@+id/ac2" />
+        android:layout_below="@+id/acm2"
+        android:layout_toLeftOf="@+id/fn2"
+        android:layout_toStartOf="@+id/fn2" />
 
     <TextView
         android:layout_width="wrap_content"
@@ -208,15 +232,17 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
         android:id="@+id/fn2"
+        android:textColor="@color/android:black"
         android:layout_below="@+id/acm2"
-        android:layout_toRightOf="@+id/ac2"
-        android:layout_toEndOf="@+id/ac2" />
+        android:layout_alignParentRight="true"
+        android:layout_alignParentEnd="true" />
 
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="ac"
+        android:textColor="@color/android:black"
         android:id="@+id/ac2"
         android:layout_below="@+id/tt"
         android:layout_toLeftOf="@+id/acm2"
@@ -227,10 +253,12 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Aircraft:"
+        android:textColor="@color/android:black"
         android:id="@+id/textView28"
         android:layout_below="@+id/textView25"
-        android:layout_alignRight="@+id/textView25"
-        android:layout_alignEnd="@+id/textView25" />
+        android:layout_toLeftOf="@+id/acr2"
+        android:layout_toStartOf="@+id/acr2"
+ />
 
     <TextView
         android:layout_width="wrap_content"
@@ -238,6 +266,7 @@
         android:textAppearance="?android:attr/textAppearanceSmall"
         android:text="Small Text"
         android:id="@+id/acr2"
+        android:textColor="@color/android:black"
         android:layout_alignTop="@+id/textView28"
         android:layout_alignParentRight="true"
         android:layout_alignParentEnd="true" />
@@ -247,6 +276,7 @@
         android:layout_height="wrap_content"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
+        android:textColor="@color/android:black"
         android:id="@+id/pr"
         android:layout_below="@+id/acr1"
         android:layout_centerHorizontal="true" />
@@ -257,6 +287,7 @@
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Price:"
         android:id="@+id/textView31"
+        android:textColor="@color/android:black"
         android:layout_below="@+id/textView22"
         android:layout_toLeftOf="@+id/pr"
         android:layout_toStartOf="@+id/pr" />
@@ -264,10 +295,11 @@
     <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:textColor="@color/android:black"
         android:textAppearance="?android:attr/textAppearanceMedium"
         android:text="Medium Text"
         android:id="@+id/cur"
-        android:layout_below="@+id/textView28"
+        android:layout_alignTop="@+id/pr"
         android:layout_toRightOf="@+id/pr"
         android:layout_toEndOf="@+id/pr" />
 

@@ -62,14 +62,14 @@ public class TicketsAdapter extends BaseAdapter {
         ((TextView) view.findViewById(R.id.act)).setText(g.getAirportNameTo());
         ((TextView) view.findViewById(R.id.dur)).setText(g.getDurationStr());
         ((TextView) view.findViewById(R.id.ac1)).setText(g.getAirlineCode());
-        ((TextView) view.findViewById(R.id.ac2)).setText(g.getAirlineCode2());
+
         ((TextView) view.findViewById(R.id.acm1)).setText(g.getAirlineName());
-        ((TextView) view.findViewById(R.id.acm2)).setText(g.getAirlineName2());
+
         ((TextView) view.findViewById(R.id.fn1)).setText(g.getFlightNumber());
-        ((TextView) view.findViewById(R.id.fn2)).setText(g.getFlightNumber2());
+
         ((TextView) view.findViewById(R.id.acr1)).setText(g.getAircraft());
-        ((TextView) view.findViewById(R.id.acr2)).setText(g.getAircraft2());
-        ((TextView) view.findViewById(R.id.pr)).setText(g.getPrice());
+
+        ((TextView) view.findViewById(R.id.pr)).setText(g.getPriceStr());
         ((TextView) view.findViewById(R.id.cur)).setText(g.getPriceCurrency());
 
         if (g.getAirlineCode2()==null) {
@@ -79,6 +79,13 @@ public class TicketsAdapter extends BaseAdapter {
             ((TextView) view.findViewById(R.id.acr2)).setVisibility(View.GONE);
             ((TextView) view.findViewById(R.id.textView25)).setVisibility(View.GONE);
             ((TextView) view.findViewById(R.id.textView28)).setVisibility(View.GONE);
+        }
+        else
+        {
+            ((TextView) view.findViewById(R.id.ac2)).setText(g.getAirlineCode2());
+            ((TextView) view.findViewById(R.id.fn2)).setText(g.getFlightNumber2());
+            ((TextView) view.findViewById(R.id.acm2)).setText(g.getAirlineName2());
+            ((TextView) view.findViewById(R.id.acr2)).setText(g.getAircraft2());
         }
         return view;
 

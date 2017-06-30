@@ -143,6 +143,13 @@ public class Trip {
 
         return mPrice;
     }
+
+    public String getPriceStr() {
+
+
+        return String.valueOf(mPrice);
+    }
+
     public String getPriceCurrency() {
 
         return mPriceCurrency;
