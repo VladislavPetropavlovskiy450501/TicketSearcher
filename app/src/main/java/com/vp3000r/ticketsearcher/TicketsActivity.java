@@ -2,11 +2,13 @@ package com.vp3000r.ticketsearcher;
 
 import android.app.DatePickerDialog;
 import android.app.DownloadManager;
+import android.content.Intent;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Base64;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
@@ -67,6 +69,39 @@ public class TicketsActivity extends AppCompatActivity {
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+        ListView lw = (ListView) findViewById(R.id.trips_list);
+        assert lw != null;
+        lw.setOnItemClickListener(new AdapterView.OnItemClickListener()
+        {
+
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                Intent intent = new Intent(TicketsActivity.this, ItemActivity.class);
+                intent.putExtra("cnf",mTrips.get(position).getCityNameFrom());
+                intent.putExtra("cnt",mTrips.get(position).getCityNameTo());
+                intent.putExtra("dd",mTrips.get(position).getDepDate());
+                intent.putExtra("ad",mTrips.get(position).getArrDate());
+                intent.putExtra("dt",mTrips.get(position).getDepTime());
+                intent.putExtra("at",mTrips.get(position).getArrTime());
+                intent.putExtra("if",mTrips.get(position).getIataFrom());
+                intent.putExtra("it",mTrips.get(position).getIataTo());
+                intent.putExtra("anf",mTrips.get(position).getAirportNameFrom());
+                intent.putExtra("ant",mTrips.get(position).getAirportNameTo());
+                intent.putExtra("ds",mTrips.get(position).getDurationStr());
+                intent.putExtra("ac1",mTrips.get(position).getAirlineCode());
+                intent.putExtra("an1",mTrips.get(position).getAirlineName());
+                intent.putExtra("fn1",mTrips.get(position).getFlightNumber());
+                intent.putExtra("acr1",mTrips.get(position).getAircraft());
+                intent.putExtra("prs",mTrips.get(position).getPriceStr());
+                intent.putExtra("prc",mTrips.get(position).getPriceCurrency());
+                intent.putExtra("ac2",mTrips.get(position).getAirlineCode2());
+                intent.putExtra("fn2",mTrips.get(position).getFlightNumber2());
+                intent.putExtra("an2",mTrips.get(position).getAirlineName2());
+                intent.putExtra("acr2",mTrips.get(position).getAircraft2());
+                startActivity(intent);
+            }
+        }
+        );
     }
 
     public void onClick(View w) {
@@ -85,6 +120,7 @@ public class TicketsActivity extends AppCompatActivity {
 String val2 = value.substring(6,10)+value.substring(3,5)+value.substring(0,2);
                 getTickets(val2);
                 break;
+
             }
 
             case R.id.txtRegWindowBD:
@@ -97,6 +133,7 @@ String val2 = value.substring(6,10)+value.substring(3,5)+value.substring(0,2);
 
         }
     }
+
 
 
     private void initDateBirthdayDatePicker() {
@@ -233,4 +270,9 @@ String val2 = value.substring(6,10)+value.substring(3,5)+value.substring(0,2);
         AppIndex.AppIndexApi.end(client, viewAction);
         client.disconnect();
     }
+
+
+
+
+
 }
