@@ -2,7 +2,10 @@ package com.vp3000r.ticketsearcher;
 
 import android.app.DatePickerDialog;
 import android.app.DownloadManager;
+import android.content.Context;
 import android.content.Intent;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -40,17 +43,15 @@ import java.util.Map;
 
 
 public class TicketsActivity extends AppCompatActivity {
-    /*
-        @Override
-        protected void onCreate(Bundle savedInstanceState) {
-            super.onCreate(savedInstanceState);
-            setContentView(R.layout.activity_tickets);
-        }*/
+
     private EditText txtRegWinBD;
-    private DatePickerDialog dateBirdayDatePicker;
+    private DatePickerDialog dateDatePicker;
     private ListView mTickList;
-    private TicketsAdapter mAdapter;
+    private TicketsAdapter mAdapter, mAdapterFT, mAdapterCT, mAdapterCS;
     private ArrayList<Trip> mTrips = new ArrayList<>();
+    private int FastestIndex, ChippestIndex, StrightChippestIndex;
+
+
     /**
      * ATTENTION: This was auto-generated to implement the App Indexing API.
      * See https://g.co/AppIndexing/AndroidStudio for more information.
@@ -76,60 +77,103 @@ public class TicketsActivity extends AppCompatActivity {
 
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Intent intent = new Intent(TicketsActivity.this, ItemActivity.class);
-                intent.putExtra("cnf",mTrips.get(position).getCityNameFrom());
-                intent.putExtra("cnt",mTrips.get(position).getCityNameTo());
-                intent.putExtra("dd",mTrips.get(position).getDepDate());
-                intent.putExtra("ad",mTrips.get(position).getArrDate());
-                intent.putExtra("dt",mTrips.get(position).getDepTime());
-                intent.putExtra("at",mTrips.get(position).getArrTime());
-                intent.putExtra("if",mTrips.get(position).getIataFrom());
-                intent.putExtra("it",mTrips.get(position).getIataTo());
-                intent.putExtra("anf",mTrips.get(position).getAirportNameFrom());
-                intent.putExtra("ant",mTrips.get(position).getAirportNameTo());
-                intent.putExtra("ds",mTrips.get(position).getDurationStr());
-                intent.putExtra("ac1",mTrips.get(position).getAirlineCode());
-                intent.putExtra("an1",mTrips.get(position).getAirlineName());
-                intent.putExtra("fn1",mTrips.get(position).getFlightNumber());
-                intent.putExtra("acr1",mTrips.get(position).getAircraft());
-                intent.putExtra("prs",mTrips.get(position).getPriceStr());
-                intent.putExtra("prc",mTrips.get(position).getPriceCurrency());
-                intent.putExtra("ac2",mTrips.get(position).getAirlineCode2());
-                intent.putExtra("fn2",mTrips.get(position).getFlightNumber2());
-                intent.putExtra("an2",mTrips.get(position).getAirlineName2());
-                intent.putExtra("acr2",mTrips.get(position).getAircraft2());
-                startActivity(intent);
+                putExtrasInIntent (position);
             }
         }
         );
     }
 
+    public void putExtrasInIntent (int position)
+    {
+        Intent intent = new Intent(TicketsActivity.this, ItemActivity.class);
+        intent.putExtra("cnf",mTrips.get(position).getCityNameFrom());
+        intent.putExtra("cnt",mTrips.get(position).getCityNameTo());
+        intent.putExtra("dd",mTrips.get(position).getDepDate());
+        intent.putExtra("ad",mTrips.get(position).getArrDate());
+        intent.putExtra("dt",mTrips.get(position).getDepTime());
+        intent.putExtra("at",mTrips.get(position).getArrTime());
+        intent.putExtra("if",mTrips.get(position).getIataFrom());
+        intent.putExtra("it",mTrips.get(position).getIataTo());
+        intent.putExtra("anf",mTrips.get(position).getAirportNameFrom());
+        intent.putExtra("ant",mTrips.get(position).getAirportNameTo());
+        intent.putExtra("ds",mTrips.get(position).getDurationStr());
+        intent.putExtra("ac1",mTrips.get(position).getAirlineCode());
+        intent.putExtra("an1",mTrips.get(position).getAirlineName());
+        intent.putExtra("fn1",mTrips.get(position).getFlightNumber());
+        intent.putExtra("acr1",mTrips.get(position).getAircraft());
+        intent.putExtra("prs",mTrips.get(position).getPriceStr());
+        intent.putExtra("prc",mTrips.get(position).getPriceCurrency());
+        intent.putExtra("ac2",mTrips.get(position).getAirlineCode2());
+        intent.putExtra("fn2",mTrips.get(position).getFlightNumber2());
+        intent.putExtra("an2",mTrips.get(position).getAirlineName2());
+        intent.putExtra("acr2",mTrips.get(position).getAircraft2());
+        startActivity(intent);
+    }
+
+    public static boolean hasConnection(final Context context) {
+        ConnectivityManager cm = (ConnectivityManager) context.getSystemService(Context.CONNECTIVITY_SERVICE);
+        NetworkInfo wifiInfo;
+        wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_WIFI);
+        if (wifiInfo != null && wifiInfo.isConnected()) {
+            return true;
+        }
+        wifiInfo = cm.getNetworkInfo(ConnectivityManager.TYPE_MOBILE);
+        if (wifiInfo != null && wifiInfo.isConnected()) {
+            return true;
+        }
+        wifiInfo = cm.getActiveNetworkInfo();
+        if (wifiInfo != null && wifiInfo.isConnected()) {
+            return true;
+        }
+        return false;
+    }
     public void onClick(View w) {
         switch (w.getId()) {
             case R.id.button:
             {
                 EditText editText = (EditText) findViewById(R.id.txtRegWindowBD);
                 String value = editText.getText().toString();
-      /*          char buf[] = new char[8];
 
-                value.getChars(6,10,buf,0);
-                value.getChars(3,5,buf,4);
-                value.getChars(0,2,buf,6);
-                String dateStr = buf.toString();
-            dateStr = buf.+buf[1];*/
 String val2 = value.substring(6,10)+value.substring(3,5)+value.substring(0,2);
-                getTickets(val2);
+                if (hasConnection(this)==true) {
+                    getTickets(val2);
+                }
+                else
+                {
+                    Toast.makeText(this, "No internet connection", Toast.LENGTH_LONG).show();
+
+                }
+
+              //  getTickets(val2);
                 break;
 
             }
 
             case R.id.txtRegWindowBD:
-            {    // это шаг 3, функцией show() мы говорим, что календарь нужно отобразить
+            {
                 initDateBirthdayDatePicker();
-                dateBirdayDatePicker.show();
+                dateDatePicker.show();
 
                 break;
         }
+            case R.id.button2:
+            {
+                putExtrasInIntent (FastestIndex);
+
+                break;
+            }
+            case R.id.button3:
+            {
+                putExtrasInIntent (ChippestIndex);
+
+                break;
+            }
+            case R.id.button4:
+            {
+                putExtrasInIntent (StrightChippestIndex);
+
+                break;
+            }
 
         }
     }
@@ -137,10 +181,10 @@ String val2 = value.substring(6,10)+value.substring(3,5)+value.substring(0,2);
 
 
     private void initDateBirthdayDatePicker() {
-        Calendar newCalendar = Calendar.getInstance(); // объект типа Calendar мы будем использовать для получения даты
-        final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy"); // это строка нужна для дальнейшего преобразования даты в строку
-        //создаем объект типа DatePickerDialog и инициализируем его конструктор обработчиком события выбора даты и данными для даты по умолчанию
-        dateBirdayDatePicker = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
+        Calendar newCalendar = Calendar.getInstance();
+        final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
+
+        dateDatePicker = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
             // функция onDateSet обрабатывает шаг 2: отображает выбранные нами данные в элементе EditText
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
@@ -162,6 +206,9 @@ String val2 = value.substring(6,10)+value.substring(3,5)+value.substring(0,2);
                     public void onResponse(JSONArray response) {
                         try {
                              putDataToAdapter(response);
+                            FastestIndex = findFastest(response);
+                            StrightChippestIndex = findChippestStraight(response);
+                            ChippestIndex = findChippest(response);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
@@ -181,12 +228,7 @@ String val2 = value.substring(6,10)+value.substring(3,5)+value.substring(0,2);
                         + Base64.encodeToString(credentials.getBytes(), Base64.NO_WRAP);
                 headers.put("Content-Type", "application/json");
                 headers.put("Authorization", auth);
-            /*Map<String,String> params = new HashMap<String, String>();
-                params.put("Login","user2");
-                params.put("password","Bshj7Hj9rwt");
 
-
-            }*/
                 return headers;
             }
         };
@@ -195,9 +237,70 @@ String val2 = value.substring(6,10)+value.substring(3,5)+value.substring(0,2);
         requestQueue.add(stringRequest);
     }
 
+    private int findFastest(JSONArray array) throws JSONException {
+        int mTickCount = array.length();
+        int FastestTime;
+        int FastestTimeIndex = 0;
+        JSONObject object = array.getJSONObject(0);
+        FastestTime = object.getInt("duration");
+        for(int i = 1; i < mTickCount; i++) {
+            object = array.getJSONObject(i);
+            if (FastestTime > object.getInt("duration")) {
+                FastestTime = object.getInt("duration");
+                FastestTimeIndex = i;
+            }
+        }
+        return FastestTimeIndex;
+
+    }
+
+    private int findChippest (JSONArray array) throws JSONException {
+        int mTickCount = array.length();
+        int MinPrice;
+        int MinPriceIndex = 0;
+        JSONObject object = array.getJSONObject(0);
+        MinPrice = object.getInt("price");
+        for (int i = 1; i < mTickCount; i++) {
+            object = array.getJSONObject(i);
+            if (MinPrice > object.getInt("price")) {
+                MinPrice = object.getInt("price");
+                MinPriceIndex = i;
+            }
+        }
+            return MinPriceIndex;
+
+    }
+
+    private int findChippestStraight(JSONArray array) throws JSONException {
+        int mTickCount = array.length();
+        int MinPrice = 0;
+        int MinPriceIndex = 0;
+        boolean flag = true;
+        int i = 0;
+        JSONObject object;
+        while (flag == true) {
+            object = array.getJSONObject(i);
+            if (object.getString("airlineCode2").equals("null")) {
+                MinPrice = object.getInt("price");
+                MinPriceIndex = i;
+                flag = false;
+            }
+            i++;
+        }
+        for (; i < mTickCount; i++) {
+            object = array.getJSONObject(i);
+            if (MinPrice > object.getInt("price") && object.getString("airlineCode2").equals("null")) {
+                MinPrice = object.getInt("price");
+                MinPriceIndex = i;
+            }
+        }
+            return MinPriceIndex;
+
+    }
 
     private void putDataToAdapter(JSONArray array) throws JSONException {
         int mTickCount = array.length();
+        mTrips.clear();
 
         for(int i = 0; i < mTickCount; i++) {
             JSONObject object = array.getJSONObject(i);
