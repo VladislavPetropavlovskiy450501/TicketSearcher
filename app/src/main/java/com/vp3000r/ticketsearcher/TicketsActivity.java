@@ -12,9 +12,11 @@ import android.os.Bundle;
 import android.util.Base64;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ListView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Request;
@@ -50,6 +52,7 @@ public class TicketsActivity extends AppCompatActivity {
     private TicketsAdapter mAdapter, mAdapterFT, mAdapterCT, mAdapterCS;
     private ArrayList<Trip> mTrips = new ArrayList<>();
     private int FastestIndex, ChippestIndex, StrightChippestIndex;
+    private boolean AdapterState = false;
 
 
     /**
@@ -70,6 +73,12 @@ public class TicketsActivity extends AppCompatActivity {
         // ATTENTION: This was auto-generated to implement the App Indexing API.
         // See https://g.co/AppIndexing/AndroidStudio for more information.
         client = new GoogleApiClient.Builder(this).addApi(AppIndex.API).build();
+
+            ((Button) findViewById(R.id.button2)).setVisibility(View.GONE);
+            ((Button) findViewById(R.id.button3)).setVisibility(View.GONE);
+            ((Button) findViewById(R.id.button4)).setVisibility(View.GONE);
+        ((TextView) findViewById(R.id.textView12)).setVisibility(View.GONE);
+
         ListView lw = (ListView) findViewById(R.id.trips_list);
         assert lw != null;
         lw.setOnItemClickListener(new AdapterView.OnItemClickListener()
@@ -134,7 +143,7 @@ public class TicketsActivity extends AppCompatActivity {
                 EditText editText = (EditText) findViewById(R.id.txtRegWindowBD);
                 String value = editText.getText().toString();
 
-String val2 = value.substring(6,10)+value.substring(3,5)+value.substring(0,2);
+                String val2 = value.substring(6,10)+value.substring(3,5)+value.substring(0,2);
                 if (hasConnection(this)==true) {
                     getTickets(val2);
                 }
@@ -185,11 +194,18 @@ String val2 = value.substring(6,10)+value.substring(3,5)+value.substring(0,2);
         final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
         dateDatePicker = new DatePickerDialog(this, new DatePickerDialog.OnDateSetListener() {
-            // функция onDateSet обрабатывает шаг 2: отображает выбранные нами данные в элементе EditText
+
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear, int dayOfMonth) {
+                Calendar c=Calendar.getInstance();
+
+                int yearr=c.get(c.YEAR);
+                int month=c.get(c.MONTH);
+                int day=c.get(c.DAY_OF_MONTH);
                 Calendar newCal = Calendar.getInstance();
+                if (year>yearr || (year==yearr && monthOfYear>month) || (year==yearr && monthOfYear==month && dayOfMonth>=day))
                 newCal.set(year, monthOfYear, dayOfMonth);
+
                 txtRegWinBD.setText(dateFormat.format(newCal.getTime()));
             }
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
@@ -205,18 +221,33 @@ String val2 = value.substring(6,10)+value.substring(3,5)+value.substring(0,2);
                     @Override
                     public void onResponse(JSONArray response) {
                         try {
+                            mTrips.clear();
+                            AdapterState = false;
                              putDataToAdapter(response);
-                            FastestIndex = findFastest(response);
-                            StrightChippestIndex = findChippestStraight(response);
-                            ChippestIndex = findChippest(response);
+
+                            if (AdapterState==true)
+                            {
+                                FastestIndex = findFastest(response);
+                                StrightChippestIndex = findChippestStraight(response);
+                                ChippestIndex = findChippest(response);
+                                ((Button) findViewById(R.id.button2)).setVisibility(View.VISIBLE);
+                                ((Button) findViewById(R.id.button3)).setVisibility(View.VISIBLE);
+                                ((Button) findViewById(R.id.button4)).setVisibility(View.VISIBLE);
+                                ((TextView) findViewById(R.id.textView12)).setVisibility(View.GONE);
+                            }
+                            else
+                                ((TextView) findViewById(R.id.textView12)).setVisibility(View.VISIBLE);
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
                 }, new Response.ErrorListener() {
+
+
             @Override
             public void onErrorResponse(VolleyError error) {
                 VolleyLog.d("Volley", "Error: " + error.getMessage());
+
 
             }
         }){
@@ -300,9 +331,11 @@ String val2 = value.substring(6,10)+value.substring(3,5)+value.substring(0,2);
 
     private void putDataToAdapter(JSONArray array) throws JSONException {
         int mTickCount = array.length();
-        mTrips.clear();
+if (mTickCount > 0) AdapterState = true;
 
         for(int i = 0; i < mTickCount; i++) {
+
+
             JSONObject object = array.getJSONObject(i);
             mTrips.add(new Trip(object.getString("cityNameFrom"),
                     object.getString("cityNameTo"),
