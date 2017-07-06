@@ -160,7 +160,7 @@ public class TicketsActivity extends AppCompatActivity {
 
             case R.id.txtRegWindowBD:
             {
-                initDateBirthdayDatePicker();
+                initDatePicker();
                 dateDatePicker.show();
 
                 break;
@@ -189,7 +189,7 @@ public class TicketsActivity extends AppCompatActivity {
 
 
 
-    private void initDateBirthdayDatePicker() {
+    private void initDatePicker() {
         Calendar newCalendar = Calendar.getInstance();
         final SimpleDateFormat dateFormat = new SimpleDateFormat("dd.MM.yyyy");
 
@@ -207,6 +207,7 @@ public class TicketsActivity extends AppCompatActivity {
                 newCal.set(year, monthOfYear, dayOfMonth);
 
                 txtRegWinBD.setText(dateFormat.format(newCal.getTime()));
+
             }
         }, newCalendar.get(Calendar.YEAR), newCalendar.get(Calendar.MONTH), newCalendar.get(Calendar.DAY_OF_MONTH));
     }
@@ -235,8 +236,12 @@ public class TicketsActivity extends AppCompatActivity {
                                 ((Button) findViewById(R.id.button4)).setVisibility(View.VISIBLE);
                                 ((TextView) findViewById(R.id.textView12)).setVisibility(View.GONE);
                             }
-                            else
+                            else {
                                 ((TextView) findViewById(R.id.textView12)).setVisibility(View.VISIBLE);
+                                ((Button) findViewById(R.id.button2)).setVisibility(View.GONE);
+                                ((Button) findViewById(R.id.button3)).setVisibility(View.GONE);
+                                ((Button) findViewById(R.id.button4)).setVisibility(View.GONE);
+                            }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
